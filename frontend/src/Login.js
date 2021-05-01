@@ -9,6 +9,9 @@ import {
 } from 'react-router-dom'
 import './App.css'
 import Signup from './Signup'
+import googleSignIn from './googleSignin.png'
+import GameBoxLogo from './GameBoxLogo.png'
+
 // import logo from './logo.png'
 
 const Login = () => {
@@ -23,6 +26,8 @@ const Login = () => {
       password,
     })
 
+    const { data2 } = await axios.post('/good')
+    
     if (data === 'logged in') {
       history.push('/')
     } else {
@@ -31,10 +36,11 @@ const Login = () => {
   }
   return (
     <div className="login">
-      {/* <img src={logo} alt="logo" /> */}
+      <img src={GameBoxLogo} style={{width:'30%', marginLeft:'auto'}} alt="logo" />
       <br />
       <br />
-      <h3>Log in</h3>
+      <br />
+      <br />
       <br />
       <input
         onChange={e => setUsername(e.target.value)}
@@ -49,14 +55,19 @@ const Login = () => {
       <br />
       <br />
       <button
-        className="btn btn-success"
+        className= "btn btn-outline-success"
         onClick={() => login(username, password)}
       >
         Login
       </button>
       <br />
       <br />
-
+      <a href='/google' />
+      <Route path='/google' component={() => { 
+     window.location.href = 'http://localhost:3000/google'; 
+     return null;
+}}/>
+      <Link to="/google"><img src={googleSignIn} width='150px' alt ='google sign in'></img></Link>
       <p>{msg}</p>
       <Link to="/signup">sign up instead</Link>
       <Route path="/signup">

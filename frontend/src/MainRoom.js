@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import AOS from 'aos'
 import Modal from 'react-bootstrap/Modal'
+import Navbar from 'react-bootstrap/Navbar'
+import Nav from 'react-bootstrap/Nav'
+import { Input, Whisper, Tooltip } from 'rsuite'
+
 // import Dropdown from 'react-bootstrap/Dropdown'
 import { CheckPicker, Slider, TreePicker } from 'rsuite'
 import { Dropdown } from 'rsuite'
@@ -12,6 +16,7 @@ import SecretHitlerLogo from './Secret-Hitler.png'
 import SkribblioLogo from './Skribblio.gif'
 import SurvivioLogo from './Survivio.png'
 import 'rsuite/dist/styles/rsuite-default.min.css'
+import loading from './loading2.gif'
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 
@@ -26,6 +31,7 @@ import {
 import './App.css'
 import Login from './Login'
 import GameRoom from './GameRoom'
+import NavBar from './NavBar'
 
 import Lobbies from './Lobbies'
 
@@ -36,9 +42,11 @@ const MainRoom = () => {
   const [link, setLink] = useState('')
   const [priv, setPriv] = useState(false)
   const [numPlayers, setNumPlayers] = useState(0)
-  const [playerLimit, setPlayerLimit] = useState(0)
+  const [playerLimit, setPlayerLimit] = useState(2)
   const [pic, setPic] = useState('')
   const [inGame, setInGame] = useState(false)
+  const [load, setLoad] = useState(true)
+
   // const [canCreate, setCanCreate] = useState(false)
 
   const [id, setId] = useState('')
@@ -81,7 +89,7 @@ const MainRoom = () => {
       setUser(res.data.user)
       setOwner(res.data.user)
       setJoined(res.data.inGame)
-     
+
       // set_Id(res.data.user + Math.random() * 100)
       // setOwner(res.data.user)
 
@@ -90,9 +98,9 @@ const MainRoom = () => {
           game={q.game}
           owner={q.owner}
           link={q.link}
-          numPlayers={(q.players).length}
+          numPlayers={q.players.length}
           _id={q._id}
-          players = {q.players}
+          players={q.players}
           key={q._id}
           playerLimit={q.playerLimit}
           oddEven={i + 1}
@@ -105,8 +113,6 @@ const MainRoom = () => {
     }, 1000)
     return () => clearInterval(intervalID)
   }, [owner, user, joined])
-
-  
 
   const showModal = () => {
     setIsOpen(true)
@@ -130,45 +136,50 @@ const MainRoom = () => {
     })
     enterGame(x)
     setInGame(true)
-    
-    setIsOpen(false)
 
-    
+    setIsOpen(false)
   }
   const logout = async () => {
     await axios.post('/account/logout')
   }
-
   if (user === '' || user === undefined) {
+    setTimeout(function () {
+      setLoad(false)
+    }, 1500)
     return (
       <div>
-        <Link to="/login">Login here</Link>
-        <Route path="/login ">
-          <Login />
-        </Route>
+        {!load && <Login />}
+        {load && (
+          <img
+            src={loading}
+            alt="loading"
+            style={{
+              width: '200px',
+              marginLeft: 'auto',
+              marginRight: 'auto',
+              display: 'block',
+              marginTop: '20%',
+            }}
+          />
+        )}
         <br />
       </div>
     )
   }
-  if(inGame) {
-    return <GameRoom x={_id} back={() => setInGame(false)} />
+  if (inGame) {
+    return <GameRoom x={_id} user={user} back={() => setInGame(false)} />
   } else {
     return (
       <div style={{ width: '100%' }}>
-        <p>
-          Hello &nbsp;
-          {user} 
-          <button
-            className="btn btn-danger"
-            style={{ float: 'right' }}
-            onClick={() => logout(user)}
-          >
-            Logout
-          </button>
-        </p>
+  
+<NavBar />
+    
         {!joined && <button onClick={showModal}>Start new lobby</button>}
         <br />
         <br />
+
+        <p>Hello {user}!</p>
+
 
         <Modal
           animation={false}
@@ -185,7 +196,6 @@ const MainRoom = () => {
             <Modal.Title>Lobby Set Up</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-           
             <Dropdown
               title="Select a game"
               style={{ width: '40%', marginLeft: '35%' }}
@@ -242,12 +252,14 @@ const MainRoom = () => {
                 Custom
               </Dropdown.Item>
             </Dropdown>
- <input
-            className="addAnswer"
-            style={{ width: '90%', borderBottom: '1px solid black' }}
-            onChange={e => setLink(e.target.value)}
-            placeholder="What's the link to your game lobby?"
-          />
+
+            {/* <input
+              className="addAnswer"
+              style={{ width: '90%', borderBottom: '1px solid black' }}
+              onChange={e => setLink(e.target.value)}
+              placeholder="What's the link to your game lobby?"
+            /> */}
+
             <div style={{ textAlign: 'center' }}>
               <br />
               <br />
@@ -258,6 +270,7 @@ const MainRoom = () => {
                 onChange={value => {
                   setPlayerLimit(value)
                 }}
+                min ={2}
                 max={10}
                 style={{ margin: '10px', width: '50%', marginLeft: '25%' }}
               />
@@ -275,7 +288,6 @@ const MainRoom = () => {
                 {' '}
                 Private Room?
               </Checkbox>
-
             </div>
           </Modal.Body>
           <Modal.Footer>
@@ -298,9 +310,7 @@ const MainRoom = () => {
                 console.log('x before addlobby:' + x)
                 // set_Id(user);
                 // console.log(_id)
-                addLobby(
-                  x
-                )
+                addLobby(x)
               }}
             >
               Create
@@ -312,7 +322,7 @@ const MainRoom = () => {
           animation={false}
           show={isOpen}
           onHide={hideModal}
-          style={{ marginTop: '60%', alignText: 'center' }}
+          style={{ marginTop: '20%', alignText: 'center' }}
         >
           <Modal.Header>
             <Modal.Title>Preview</Modal.Title>

@@ -43,14 +43,13 @@ router.post('/join', async (req, res) => {
 
 router.post('/leave', async (req, res) => {
   const { x } = req.body
-  
   try {
     await Lobby.findOneAndUpdate(
       { _id: x },
       { $pull: { players: req.session.username } }
     )
   } catch {
-    res.send('could not join lobby')
+    res.send('could not leave lobby')
   }
   try {
     await User.findOneAndUpdate(
@@ -60,8 +59,27 @@ router.post('/leave', async (req, res) => {
   } catch {
     res.send('could not update user')
   }
+
   
 })
+
+router.post('/delete', async (req, res) => {
+  const { x } = req.body
+  try {
+    await Lobby.deleteOne(
+      { _id: x },
+    )
+    res.send('lobby deleted')
+
+  } catch {
+    res.send('could not delete lobby')
+  }
+
+
+  
+})
+
+
 
 router.get('/lobbies', async (req, res) => {
   Lobby.find({}).then(lobby => {
@@ -84,7 +102,8 @@ router.post('/lobbies/add', isAuthenticated, async (req, res) => {
       numPlayers,
       priv,
       playerLimit,
-      players: l
+      players: l,
+      password: ''
     })
     res.send('Created lobby')
   } catch(err) {
@@ -109,6 +128,34 @@ router.post('/lobbies/add', isAuthenticated, async (req, res) => {
   }
 })
 
+router.post('/lobbies/addlink', isAuthenticated, async (req, res) => {
+  const {x, link } = req.body
+  
+  try {
+    await Lobby.findOneAndUpdate(
+      { _id: x },
+      { link }
+    )
+  } catch {
+    res.send('could not add link')
+  }
+  
+})
+
+router.post('/lobbies/addPass', isAuthenticated, async (req, res) => {
+  const {pass, x } = req.body
+  console.log('here')
+  try {
+    await Lobby.findOneAndUpdate(
+      { _id: x },
+      { password: pass }
+    )
+  } catch {
+    res.send('could not add password')
+  }
+  
+})
+
 router.post('/lobbies/isauthenticated', async (req, res) => {
   res.json({ user: req.session.username })
 })
@@ -122,7 +169,7 @@ router.post('/lobbies/isauthenticated2', async (req, res) => {
   res.json({ user: req.session.username, inGame: curr[0].inGame})
 
   } catch {
-    res.send("Couldn't create a lobby")
+    res.send("Couldn't find user")
 
   }
   })

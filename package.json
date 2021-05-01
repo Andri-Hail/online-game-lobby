@@ -27,16 +27,22 @@
     "bootstrap-select": "^1.13.18",
     "concurrently": "^6.0.2",
     "cookie-session": "^1.4.0",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "logos": "^1.0.4",
     "mongoose": "^5.12.5",
     "parcel-bundler": "^1.12.3",
+    "passport": "^0.4.1",
+    "passport-google-oauth2": "^0.2.0",
+    "passport-oauth2": "^1.5.0",
     "react": "^17.0.2",
     "react-bootstrap": "^1.5.2",
     "react-dom": "^17.0.2",
     "react-loadingmask": "^4.0.6",
     "react-router-dom": "^5.2.0",
-    "rsuite": "^4.9.3"
+    "rsuite": "^4.9.3",
+    "stream-chat": "^3.8.0",
+    "stream-chat-react": "^5.3.0"
   },
   "browserslist": [
     "last 3 and_chr versions",

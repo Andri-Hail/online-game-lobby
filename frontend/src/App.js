@@ -5,6 +5,7 @@ import Signup from './Signup'
 import Login from './Login'
 import Lobbies from './Lobbies'
 import MainRoom from './MainRoom'
+import About from './About'
 
 const App = () => (
   <div>
@@ -18,9 +19,16 @@ const App = () => (
       <Route path="api/lobbies">
         <Lobbies />
       </Route>
+      <Route path="/about">
+        <About />
+      </Route>
+      <Route path="/good">
+        <MainRoom />
+      </Route>
       <Route path="/">
         <MainRoom />
       </Route>
+     
     </Switch>
   </div>
 )

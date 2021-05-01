@@ -9,7 +9,9 @@ const lobbySchema = new Schema ({
     numPlayers: { type: Number, default: 0 },
     playerLimit: { type: Number, default: 0 },
     pic: String,
-    players: [{type: String}]
+    players: [{type: String}],
+    password: String
+
 });
 
 module.exports = model('Lobby', lobbySchema)

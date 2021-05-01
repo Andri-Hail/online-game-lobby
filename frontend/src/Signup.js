@@ -10,6 +10,8 @@ import {
 import './App.css'
 import Login from './Login'
 // import logo from './logo.png'
+import googleSignIn from './googleSignin.png'
+import GameBoxLogo from './GameBoxLogo.png'
 
 const Signup = () => {
   const [username, setUsername] = useState('')
@@ -46,11 +48,12 @@ const Signup = () => {
 
   return (
     <div className="login">
-      {/* <img src={logo} alt="logo" /> */}
-
+       <img src={GameBoxLogo} style={{width:'30%', marginLeft:'auto'}} alt="logo" />
       <br />
       <br />
-      <h3>Sign up</h3>
+      <br />
+      <br />
+      <br />
       <br />
       <input
         onChange={e => setUsername(e.target.value)}
@@ -65,7 +68,7 @@ const Signup = () => {
       <br />
       <br />
       <button
-        className="btn btn-success"
+        className="btn btn-outline-success"
         onClick={() => signup(username, password)}
       >
         Register
@@ -74,6 +77,12 @@ const Signup = () => {
       <br />
 
       <p>{msg}</p>
+      <a href='/google' />
+      <Route path='/google' component={() => { 
+     window.location.href = 'http://localhost:3000/google'; 
+     return null;
+}}/>
+      <Link to="/google"><img src={googleSignIn} width='150px' alt ='google sign in'></img></Link>
       <Link to="/login">login instead</Link>
       <Route path="/login">
         <Login />

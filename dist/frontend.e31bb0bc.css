@@ -16,8 +16,8 @@
 .lobby {
     text-align: center;
     border: 1px solid black;
-    width:80%;
-    margin-left:10%;
+    width:60%;
+    margin-left:20%;
     margin-top: 3%;
     box-shadow: 5px 5px 8px #888888;
     display: block;
@@ -27,8 +27,8 @@
 }
 
 .lobby:hover {
-    margin-left:8%;
-    width:84%
+    margin-left:19%;
+    width:62%
 
 }
 

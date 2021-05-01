@@ -87,14 +87,14 @@ const Lobbies = props => {
   }
   return (
     <div>
-      <div data-aos={'fade-' + direction} className={'lobby' + direction}>
+      <div data-aos={'fade-' + direction} className={'lobby'}>
         <h4>
         {owner}'s  {privt} <span style={{ color: 'blue' }}> {game}</span> Lobby
         </h4>
         <img src={pic} alt="logo" style={{ width: '20%' }} />
         <br></br>
-        {!joined && <button className="join" disabled={joined} onClick = {() => func(owner)}>Join</button>}
-        {joined && <button className="join" style={{backgroundColor:'#f06654'}} disabled={joined} onClick = {() => func(owner)}>Join</button>}
+        {!joined &&  players.length != playerLimit&& <button className="join" disabled={joined || players.length === playerLimit} onClick = {() => func(owner)}>Join</button>}
+        {(joined || players.length === playerLimit) && <button className="join" style={{backgroundColor:'#f06654'}} disabled={joined || players.length === playerLimit} onClick = {() => func(owner)}>Join</button>}
 
         <p>
           There's{' '}
